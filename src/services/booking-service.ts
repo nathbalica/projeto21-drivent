@@ -1,8 +1,8 @@
-import { cannotBookingError, notFoundError } from "@/errors";
-import roomRepository from "@/repositories/room-repository";
-import bookingRepository from "@/repositories/booking-repository";
-import { enrollmentRepository } from "@/repositories/enrollments-repository";
-import { ticketsRepository } from "@/repositories/tickets-repository";
+import { cannotBookingError, notFoundError } from '@/errors';
+import roomRepository from '@/repositories/room-repository';
+import bookingRepository from '@/repositories/booking-repository';
+import { enrollmentRepository } from '@/repositories/enrollments-repository';
+import { ticketsRepository } from '@/repositories/tickets-repository';
 
 async function getBookingByUserId(userId: number) {
   const booking = await bookingRepository.findByUserId(userId);
@@ -34,19 +34,18 @@ async function modifyBooking(userId: number, roomId: number) {
   });
 }
 
-
 async function validateEnrollmentAndTicket(userId: number) {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) throw cannotBookingError();
 
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
-  if (!ticket || ticket.status !== "PAID" || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
+  if (!ticket || ticket.status !== 'PAID' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
     throw cannotBookingError();
   }
 }
 
 async function validateRoomCapacity(roomId: number) {
-  const room = await roomRepository.findRoomById(roomId)
+  const room = await roomRepository.findRoomById(roomId);
   const currentBookings = await bookingRepository.findByRoomId(roomId);
 
   if (!room) throw notFoundError();

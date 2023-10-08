@@ -6,6 +6,10 @@ import { authenticateToken } from '@/middlewares';
 
 const bookingRouter = Router();
 
-bookingRouter.all('/*', authenticateToken).get('/', getBooking).post('/', createBooking).put('/:bookingId', updateBooking);
+bookingRouter
+  .all('/*', authenticateToken)
+  .get('/', getBooking)
+  .post('/', createBooking)
+  .put('/:bookingId', updateBooking);
 
 export { bookingRouter };
